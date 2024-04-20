@@ -6,17 +6,32 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.command.ConfigCommand;
 import ros.eagleoffire.rosvoiesninjas.ProgressionVoiesNinjas.ProgressionVoiesNinjas;
 import ros.eagleoffire.rosvoiesninjas.ProgressionVoiesNinjas.ProgressionVoiesNinjasProvider;
 import ros.eagleoffire.rosvoiesninjas.ROSVoiesNinjas;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import ros.eagleoffire.rosvoiesninjas.commands.AddProgressionVoiesNinjasCommand;
+import ros.eagleoffire.rosvoiesninjas.commands.GetProgressionVoiesNinjasCommand;
+import ros.eagleoffire.rosvoiesninjas.commands.RemoveProgressionVoiesNinjasCommand;
 
 @Mod.EventBusSubscriber(modid = ROSVoiesNinjas.MODID)
 public class ModEvents {
+
+    @SubscribeEvent
+    public static void onCommandsRegister(RegisterCommandsEvent event){
+        new AddProgressionVoiesNinjasCommand(event.getDispatcher());
+        new GetProgressionVoiesNinjasCommand(event.getDispatcher());
+        new RemoveProgressionVoiesNinjasCommand(event.getDispatcher());
+
+        ConfigCommand.register(event.getDispatcher());
+    }
+
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
         if(event.getObject() instanceof Player) {
@@ -25,7 +40,8 @@ public class ModEvents {
             }
         }
     }
-        @SubscribeEvent
+
+    @SubscribeEvent
     public static void onPlayerCloned(PlayerEvent.Clone event) {
         if(event.isWasDeath()) {
             event.getOriginal().getCapability(ProgressionVoiesNinjasProvider.PROGRESSION_VOIES_NINJAS).ifPresent(oldStore -> {
@@ -46,7 +62,7 @@ public class ModEvents {
         if(event.side == LogicalSide.SERVER) {
             event.player.getCapability(ProgressionVoiesNinjasProvider.PROGRESSION_VOIES_NINJAS).ifPresent(progression -> {
                 if(event.player.getRandom().nextFloat() < 0.005f) { // Once Every 10 Seconds on Avg
-                    event.player.sendSystemMessage(Component.literal(String.format("Your progression is at %2d XP point", progression.getExperience())));
+                    //event.player.sendSystemMessage(Component.literal(String.format("Your progression is at %2d XP point", progression.getExperience())));
                 }
             });
         }
