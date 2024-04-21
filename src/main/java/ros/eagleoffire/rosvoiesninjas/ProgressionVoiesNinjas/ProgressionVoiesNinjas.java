@@ -7,9 +7,7 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import ros.eagleoffire.rosvoiesninjas.VoiesNinjas;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.awt.*;
 import java.util.Objects;
 
 public class ProgressionVoiesNinjas {
@@ -31,13 +29,20 @@ public class ProgressionVoiesNinjas {
     }
 
     public int getXP(VoiesNinjas voiesninjas){
+        checkNewLVL(Fuinjutsu);
+        checkNewLVL(Sensorialite);
+        checkNewLVL(Infiltration);
+        checkNewLVL(Invocation);
+        checkNewLVL(KekkeiBarriere);
         return voiesninjas.getXP();
     }
     public void addXP(VoiesNinjas voiesninjas, int XpPoint){
         voiesninjas.setXP(voiesninjas.getXP() + XpPoint);
+        checkNewLVL(voiesninjas);
     }
     public void subXP(VoiesNinjas voiesninjas, int XpPoint){
-        voiesninjas.setXP(voiesninjas.getXP() - XpPoint);
+        voiesninjas.setXP(Math.max(voiesninjas.getXP() - XpPoint, 0));
+        checkNewLVL(voiesninjas);
     }
     public int getLVL(VoiesNinjas voiesninjas){
         return voiesninjas.getLVL();
@@ -60,6 +65,7 @@ public class ProgressionVoiesNinjas {
         nbt.putInt("InfiltrationLVLmax", Infiltration.getLVLmax());
     }
     public void loadNBTData(CompoundTag nbt){
+        System.out.println("Seems to work idk at this point");
         Fuinjutsu.setXP(nbt.getInt("FuinjutsuXP"));
         Sensorialite.setXP(nbt.getInt("SensorialiteXP"));
         Infiltration.setXP(nbt.getInt("InfiltrationXP"));
@@ -74,18 +80,21 @@ public class ProgressionVoiesNinjas {
         this.Infiltration = source.Infiltration;
     }
 
-    private int checkNewLVL(int XP, int LVL, int maxLVL){
-        if (XP >= 1651 && LVL != 5 && maxLVL == 5){
-            return 5;
-        }else if (XP >= 951 && LVL != 4 && maxLVL == 4){
-            return  4;
-        }else if (XP >= 451 && LVL != 3 && maxLVL == 3){
-            return  3;
-        } else if (XP >= 151 && LVL != 2 && maxLVL == 2){
-            return  2;
-        }else if (XP >= 1 && LVL != 1 && maxLVL == 1){
-            return 1;
-        } else {return LVL;}
+    private void checkNewLVL(VoiesNinjas VoieNinja){
+        int XP = VoieNinja.getXP();
+        int LVL = VoieNinja.getLVL();
+        int maxLVL = VoieNinja.getLVLmax();
+        if (XP >= 1651 && maxLVL == 5){
+            VoieNinja.setLVL(5);
+        }else if (XP >= 951 && maxLVL >= 4){
+            VoieNinja.setLVL(4);
+        }else if (XP >= 451 && maxLVL >= 3){
+            VoieNinja.setLVL(3);
+        } else if (XP >= 151 && maxLVL >= 2){
+            VoieNinja.setLVL(2);
+        }else if (XP >= 1 && maxLVL >= 1){
+            VoieNinja.setLVL(1);
+        } else {VoieNinja.setLVL(0);}
     }
 
     public VoiesNinjas getByName(String name){
