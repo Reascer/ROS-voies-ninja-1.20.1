@@ -36,7 +36,7 @@ public class RemoveProgressionVoiesNinjasCommand {
         ServerPlayer TargetedPlayer = Objects.requireNonNull(OnlinePlayer.getPlayerByName(target));
 
         TargetedPlayer.getCapability(ProgressionVoiesNinjasProvider.PROGRESSION_VOIES_NINJAS).ifPresent(progression -> {
-           progression.subExperience(qts);
+           progression.subXP(progression.getByName(voie),qts);
         });
 
         source.sendSuccess(() -> {

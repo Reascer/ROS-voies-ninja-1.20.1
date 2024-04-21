@@ -36,7 +36,7 @@ public class AddProgressionVoiesNinjasCommand {
         ServerPlayer TargetedPlayer = Objects.requireNonNull(OnlinePlayer.getPlayerByName(target));
 
         TargetedPlayer.getCapability(ProgressionVoiesNinjasProvider.PROGRESSION_VOIES_NINJAS).ifPresent(progression -> {
-           progression.addExperience(qts);
+           progression.addXP(progression.getByName(voie),qts);
         });
 
        source.sendSuccess(() -> {

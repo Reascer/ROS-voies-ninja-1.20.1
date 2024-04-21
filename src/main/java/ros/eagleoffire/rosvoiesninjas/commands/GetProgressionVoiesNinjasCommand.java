@@ -8,7 +8,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
-import net.minecraftforge.server.ServerLifecycleHooks;
 import org.jetbrains.annotations.NotNull;
 import ros.eagleoffire.rosvoiesninjas.ProgressionVoiesNinjas.ProgressionVoiesNinjasProvider;
 
@@ -32,7 +31,16 @@ public class GetProgressionVoiesNinjasCommand {
 
         TargetedPlayer.getCapability(ProgressionVoiesNinjasProvider.PROGRESSION_VOIES_NINJAS).ifPresent(progression -> {
            source.sendSuccess(() -> {
-            return Component.literal("Player " + target + " have " + progression.getExperience());
+            return Component.literal("Player " + target + " have :\n" + progression.getXP(progression.getByName("Fuinjutsu")) + " XP in Fuinjutsu which correspond to level "
+                    + progression.getLVL(progression.getByName("Fuinjutsu")) + " (max " + progression.getLVLmax(progression.getByName("Fuinjutsu")) +")\n"
+            +progression.getXP(progression.getByName("Sensorialite")) + " XP in Sensorialite which correspond to level "
+                    + progression.getLVL(progression.getByName("Sensorialite")) + " (max " + progression.getLVLmax(progression.getByName("Sensorialite")) +")\n"
+            +progression.getXP(progression.getByName("Infiltration")) + " XP in Infiltration which correspond to level "
+                    + progression.getLVL(progression.getByName("Infiltration")) + " (max " + progression.getLVLmax(progression.getByName("Infiltration")) +")\n"
+            +progression.getXP(progression.getByName("Invocation")) + " XP in Fuinjutsu which correspond to level "
+                    + progression.getLVL(progression.getByName("Invocation")) + " (max " + progression.getLVLmax(progression.getByName("Invocation")) +")\n"
+            +progression.getXP(progression.getByName("Kekkei Barriere")) + " XP in Kekkei Barriere which correspond to level "
+                    + progression.getLVL(progression.getByName("Kekkei Barriere")) + " (max " + progression.getLVLmax(progression.getByName("Kekkei Barriere")) +")");
         }, true);
         });
         return 1;
