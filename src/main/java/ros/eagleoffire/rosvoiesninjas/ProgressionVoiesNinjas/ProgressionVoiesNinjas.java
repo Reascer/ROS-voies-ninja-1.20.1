@@ -6,8 +6,6 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import ros.eagleoffire.rosvoiesninjas.VoiesNinjas;
-
-import java.awt.*;
 import java.util.Objects;
 
 public class ProgressionVoiesNinjas {
@@ -37,12 +35,18 @@ public class ProgressionVoiesNinjas {
         return voiesninjas.getXP();
     }
     public void addXP(VoiesNinjas voiesninjas, int XpPoint){
+        if (voiesninjas.getXP()==0){
+            ++this.NombreDeVoiesMaitrise;
+        }
         voiesninjas.setXP(voiesninjas.getXP() + XpPoint);
         checkNewLVL(voiesninjas);
     }
     public void subXP(VoiesNinjas voiesninjas, int XpPoint){
         voiesninjas.setXP(Math.max(voiesninjas.getXP() - XpPoint, 0));
         checkNewLVL(voiesninjas);
+        if (voiesninjas.getXP() == 0){
+            --this.NombreDeVoiesMaitrise;
+        }
     }
     public int getLVL(VoiesNinjas voiesninjas){
         return voiesninjas.getLVL();
@@ -85,15 +89,25 @@ public class ProgressionVoiesNinjas {
         int LVL = VoieNinja.getLVL();
         int maxLVL = VoieNinja.getLVLmax();
         if (XP >= 1651 && maxLVL == 5){
-            VoieNinja.setLVL(5);
+            if(NombreDeVoiesMaitrise == 1) {
+                VoieNinja.setLVL(5);
+            }
         }else if (XP >= 951 && maxLVL >= 4){
-            VoieNinja.setLVL(4);
+            if (NombreDeVoiesMaitrise <= 2){
+                VoieNinja.setLVL(4);
+            }
         }else if (XP >= 451 && maxLVL >= 3){
-            VoieNinja.setLVL(3);
+            if (NombreDeVoiesMaitrise <= 3) {
+                VoieNinja.setLVL(3);
+            }
         } else if (XP >= 151 && maxLVL >= 2){
-            VoieNinja.setLVL(2);
+            if (NombreDeVoiesMaitrise <= 4) {
+                VoieNinja.setLVL(2);
+            }
         }else if (XP >= 1 && maxLVL >= 1){
-            VoieNinja.setLVL(1);
+            if(NombreDeVoiesMaitrise<=5){
+                VoieNinja.setLVL(1);
+            }
         } else {VoieNinja.setLVL(0);}
     }
 
@@ -114,5 +128,13 @@ public class ProgressionVoiesNinjas {
             return KekkeiBarriere;
         }
         return null;
+    }
+
+    public void RPK(){
+        this.Fuinjutsu = new VoiesNinjas("Fuinjutsu");
+        this.Sensorialite = new VoiesNinjas("Sensorialite");
+        this.Infiltration = new VoiesNinjas("Infiltration");
+        this.Invocation = new VoiesNinjas("Invocation");
+        this.KekkeiBarriere = new VoiesNinjas("Kekkei Barriere");
     }
 }
