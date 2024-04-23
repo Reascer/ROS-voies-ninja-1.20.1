@@ -1,8 +1,8 @@
 package ros.eagleoffire.rosvoiesninjas;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.client.renderer.entity.ItemFrameRenderer;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -16,9 +16,7 @@ import org.slf4j.Logger;
 import ros.eagleoffire.rosvoiesninjas.Items.ModCreativeModTabs;
 import ros.eagleoffire.rosvoiesninjas.Items.ModItems;
 import ros.eagleoffire.rosvoiesninjas.client.renderer.entity.SceauExplosifRenderer;
-import ros.eagleoffire.rosvoiesninjas.entity.custom.SceauExplosifEntity;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraft.client.renderer.entity.EntityRenderers;
+import ros.eagleoffire.rosvoiesninjas.entity.custom.ModEntities;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(ROSVoiesNinjas.MODID)
@@ -30,8 +28,8 @@ public class ROSVoiesNinjas {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         ModCreativeModTabs.register(modEventBus);
-        SceauExplosifEntity.register(modEventBus);
-        ModItems.register(modEventBus);
+        ModEntities.ENTITIES.register(modEventBus);
+        ModItems.ITEMS.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 
@@ -51,13 +49,11 @@ public class ROSVoiesNinjas {
     public void onServerStarting(ServerStartingEvent event) {
     }
 
-    // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public static class ClientModEvents {
+    @Mod.EventBusSubscriber(modid= ROSVoiesNinjas.MODID, value= Dist.CLIENT, bus= Mod.EventBusSubscriber.Bus.MOD)
+    public static class ClientModEvents{
         @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event) {
-            //EntityRenderers.register(SceauExplosifEntity.SCEAU_EXPLOSIF.get(), SceauExplosifRenderer::new);
-            EntityRenderers.register(EntityType.ITEM_FRAME, ItemFrameRenderer::new);
+        public static void onClientSetup(FMLCommonSetupEvent event){
+            EntityRenderers.register(ModEntities.SCEAU_EXPLOSIF.get(), SceauExplosifRenderer::new);
         }
     }
 }

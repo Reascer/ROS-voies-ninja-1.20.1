@@ -18,7 +18,7 @@ public class ModCreativeModTabs {
                     .title(Component.translatable("creativetab.ros_voies_ninjas_tab"))
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ModItems.SCEAU_VIERGE.get());
-                        pOutput.accept(ModItems.SCEAU_EXPLOSIF.get());
+                        pOutput.accept(ModItems.SCEAU_EXPLOSIF_ITEM.get());
                         pOutput.accept(ModItems.SCEAU_CHAKRA.get());
                         pOutput.accept(ModItems.SCEAU_SCELLEMENT.get());
                         pOutput.accept(ModItems.SCEAU_CHAKRA_AUTRUI.get());
