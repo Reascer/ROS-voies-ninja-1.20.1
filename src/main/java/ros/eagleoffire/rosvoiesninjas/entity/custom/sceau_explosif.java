@@ -19,13 +19,13 @@ public class sceau_explosif<T extends Entity> extends EntityModel<T> {
 public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(ROSVoiesNinjas.MODID, "sceau_explosif"), "main");
 	private final ModelPart bb_main;
 	public sceau_explosif(ModelPart root) {
-		this.bb_main = root.getChild("bb_main");
+		this.bb_main = root.getChild("flag");
 	}
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		PartDefinition bb_main = partdefinition.addOrReplaceChild("bb_main", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, 0.0F, -8.0F, 8.0F, 0.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+		PartDefinition flag = partdefinition.addOrReplaceChild("flag", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, 0.0F, -8.0F, 8.0F, 0.0F, 16.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
